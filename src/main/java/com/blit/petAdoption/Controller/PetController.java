@@ -19,8 +19,8 @@ public class PetController {
     PetService petService;
 
     @GetMapping("/available")
-    public ResponseEntity<List<Pets>> viewAllPets(Boolean active){
-        return new ResponseEntity<>(petService.viewAllPets(active), HttpStatus.OK);
+    public ResponseEntity<List<Pets>> viewAvailPets(){
+        return new ResponseEntity<>(petService.viewAvailPets(), HttpStatus.OK);
     }
 
     @GetMapping("/all")
