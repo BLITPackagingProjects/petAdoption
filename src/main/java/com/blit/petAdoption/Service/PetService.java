@@ -6,7 +6,10 @@ import java.util.List;
 
 public interface PetService {
 
+    List<Pets> viewAllPets(Boolean active);
     List<Pets> viewAllPets();
+
+
 
 
 

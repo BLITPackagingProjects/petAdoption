@@ -15,6 +15,10 @@ public class PetsServiceImpl implements PetService {
     PetRepo petRepo;
 
     @Override
+    public List<Pets> viewAllPets(Boolean active) {
+        return (List<Pets>) petRepo.findAll();
+    }
+   @Override
     public List<Pets> viewAllPets() {
         return (List<Pets>) petRepo.findAll();
     }

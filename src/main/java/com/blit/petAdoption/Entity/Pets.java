@@ -33,6 +33,9 @@ public class Pets {
     @Column(nullable = false)
     private char sex;
 
+    @Column(nullable = false)
+    private boolean active;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy="pets")
     private Set<Application> application;
 

@@ -18,7 +18,12 @@ public class PetController {
     @Autowired
     PetService petService;
 
-    @GetMapping
+    @GetMapping("/available")
+    public ResponseEntity<List<Pets>> viewAllPets(Boolean active){
+        return new ResponseEntity<>(petService.viewAllPets(active), HttpStatus.OK);
+    }
+
+    @GetMapping("/all")
     public ResponseEntity<List<Pets>> viewAllPets(){
         return new ResponseEntity<>(petService.viewAllPets(), HttpStatus.OK);
     }
