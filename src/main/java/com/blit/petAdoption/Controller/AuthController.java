@@ -6,6 +6,7 @@ import com.blit.petAdoption.Entity.Role;
 import com.blit.petAdoption.LoginDto;
 import com.blit.petAdoption.Repository.CustomerRepo;
 import com.blit.petAdoption.Repository.RoleRepo;
+import com.blit.petAdoption.ServiceImpl.CustomerRetrievalImpl;
 import com.blit.petAdoption.SignUpDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -37,19 +38,22 @@ public class AuthController {
     private RoleRepo roleRepo;
 
     @Autowired
+    CustomerRetrievalImpl customerRetrievalImpl;
+
+    @Autowired
     private PasswordEncoder passwordEncoder;
 
     @PostMapping("/signin")
-    public ResponseEntity<String> authenticateUser(@RequestBody LoginDto loginDto) {
+    public ResponseEntity<?> authenticateUser(@RequestBody LoginDto loginDto) {
         try {
             Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                     loginDto.getUsernameOrEmail(), loginDto.getPassword()));
 
             SecurityContextHolder.getContext().setAuthentication(authentication);
-            return new ResponseEntity<>("User signed-in successfully!", HttpStatus.OK);
+            return new ResponseEntity<Customer>(customerRetrievalImpl.findByUsername(loginDto.getUsernameOrEmail()), HttpStatus.OK);
         } catch (BadCredentialsException ex) {
             // Handle bad credentials here and return an error response
-            return new ResponseEntity<>("Invalid username or password", HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<String>("Invalid username or password", HttpStatus.UNAUTHORIZED);
         }
     }
 
