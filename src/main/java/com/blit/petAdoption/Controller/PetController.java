@@ -23,7 +23,7 @@ public class PetController {
         return new ResponseEntity<>(petService.viewAvailPets(), HttpStatus.OK);
     }
 
-    @GetMapping("/all")
+    @GetMapping
     public ResponseEntity<List<Pets>> viewAllPets(){
         return new ResponseEntity<>(petService.viewAllPets(), HttpStatus.OK);
     }
