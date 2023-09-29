@@ -1,5 +1,7 @@
 package com.blit.petAdoption.ServiceImpl;
 
+import com.blit.petAdoption.Entity.Application;
+import com.blit.petAdoption.Entity.Customer;
 import com.blit.petAdoption.Entity.Pets;
 import com.blit.petAdoption.Repository.PetRepo;
 import com.blit.petAdoption.Service.PetService;
@@ -9,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class PetsServiceImpl implements PetService {
@@ -40,6 +43,34 @@ public class PetsServiceImpl implements PetService {
     public Pets addPet(Pets pet) {
         return petRepo.save(pet);
     }
+
+    @Override
+    public Pets AdoptAPet(Long petId, Customer customer) {
+        Optional<Pets> petsOptional = petRepo.findById(petId);
+
+        if (petsOptional.isPresent()) {
+            Pets pet = petsOptional.get();
+            Set<Application> applications = pet.getApplication();
+
+            // Create a new Application object and associate it with the customer
+            Application application = new Application();
+            application.setCustomer(customer);
+
+            // Add the new Application to the existing set of applications
+            applications.add(application);
+
+            // Update the pet's applications
+            pet.setApplication(applications);
+
+            // Save the updated pet
+            petRepo.save(pet);
+
+            return pet;
+        } else {
+            throw new ResourceNotFoundException("Pet with id " + petId + " does not exist");
+        }
+    }
+
 
     @Override
     public Pets updatePet(Long id, Pets pet) {

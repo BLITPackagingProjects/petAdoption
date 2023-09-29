@@ -34,9 +34,4 @@ public class Application {
     @JoinColumn(name="customer_id", nullable = false)
     private Customer customer;
 
-
-
-
-
-
 }

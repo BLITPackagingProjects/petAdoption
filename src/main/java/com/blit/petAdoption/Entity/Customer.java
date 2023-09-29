@@ -45,10 +45,4 @@ public class Customer {
             joinColumns = @JoinColumn(name = "customer_id", referencedColumnName = "customer_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
     private Set<Role> roles;
-
-
-
-
-
-
 }

@@ -1,10 +1,13 @@
 package com.blit.petAdoption.Controller;
 
+import com.blit.petAdoption.Entity.Customer;
 import com.blit.petAdoption.Entity.Pets;
 import com.blit.petAdoption.Service.PetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -41,6 +44,20 @@ public class PetController {
 
         Pets updatePet = petService.updatePet(id,pet);
         return new ResponseEntity<>(updatePet, HttpStatus.OK);
+    }
+
+    @PutMapping("/{id}/adopt")
+    public ResponseEntity<Pets> adoptAPet(@PathVariable Long id) {
+        // In a real application, you would perform authentication and get the current user.
+        // For testing purposes, you can create a sample customer or use a hardcoded one.
+        Customer currentCustomer = new Customer();
+        currentCustomer.setFirstName("John");
+        currentCustomer.setLastName("Doe");
+        currentCustomer.setUsername("johndoe");
+
+        // Call the service method to adopt the pet
+        Pets adoptedPet = petService.AdoptAPet(id, currentCustomer);
+        return new ResponseEntity<>(adoptedPet, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")

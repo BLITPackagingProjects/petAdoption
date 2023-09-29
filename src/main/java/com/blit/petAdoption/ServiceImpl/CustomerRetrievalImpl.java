@@ -19,19 +19,15 @@ public class CustomerRetrievalImpl  {
     }
 
 
-
-
-
-
     public Customer findByUsername(String username) throws UsernameNotFoundException {
-            Optional<Customer> customerOptional = customerRepo.findByUsername(username);
+        Optional<Customer> customerOptional = customerRepo.findByUsername(username);
 
-            if (customerOptional.isPresent()) {
+        if (customerOptional.isPresent()) {
 
-                return customerOptional.get();
-            } else {
-                throw new ResourceNotFoundException("Customer with " + username + " not found");
+            return customerOptional.get();
+        } else {
+            throw new ResourceNotFoundException("Customer with " + username + " not found");
 
-            }
+        }
     }
 }
