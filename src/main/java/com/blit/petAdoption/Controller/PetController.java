@@ -48,8 +48,7 @@ public class PetController {
 
     @PutMapping("/{id}/adopt")
     public ResponseEntity<Pets> adoptAPet(@PathVariable Long id) {
-        // In a real application, you would perform authentication and get the current user.
-        // For testing purposes, you can create a sample customer or use a hardcoded one.
+        // This is to test and make sure this method works
         Customer currentCustomer = new Customer();
         currentCustomer.setFirstName("John");
         currentCustomer.setLastName("Doe");
