@@ -46,7 +46,7 @@ public class PetController {
         return new ResponseEntity<>(updatePet, HttpStatus.OK);
     }
 
-    @PutMapping("/{id}/adopt")
+    @PostMapping("/{id}/adopt")
     public ResponseEntity<Pets> adoptAPet(@PathVariable Long id) {
         // This is to test and make sure this method works
         Customer currentCustomer = new Customer();

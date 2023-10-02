@@ -3,12 +3,14 @@ package com.blit.petAdoption.ServiceImpl;
 import com.blit.petAdoption.Entity.Application;
 import com.blit.petAdoption.Entity.Customer;
 import com.blit.petAdoption.Entity.Pets;
+import com.blit.petAdoption.Repository.ApplicationRepo;
 import com.blit.petAdoption.Repository.PetRepo;
 import com.blit.petAdoption.Service.PetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -19,6 +21,8 @@ public class PetsServiceImpl implements PetService {
     @Autowired
     PetRepo petRepo;
 
+    @Autowired
+    ApplicationRepo applicationRepo;
     @Override
     public List<Pets> viewAvailPets() {
         return  petRepo.displayActivePets();
@@ -50,7 +54,8 @@ public class PetsServiceImpl implements PetService {
 
         if (petsOptional.isPresent()) {
             Pets pet = petsOptional.get();
-            Set<Application> applications = pet.getApplication();
+
+            Set<Application> applications = new HashSet<>();
 
             // Create a new Application object and associate it with the customer
             Application application = new Application();
@@ -61,6 +66,8 @@ public class PetsServiceImpl implements PetService {
 
             // Update the pet's applications
             pet.setApplication(applications);
+
+            applicationRepo.saveAll(applications);
 
             // Save the updated pet
             petRepo.save(pet);

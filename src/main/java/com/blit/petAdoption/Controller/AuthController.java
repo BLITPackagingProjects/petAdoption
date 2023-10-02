@@ -50,7 +50,7 @@ public class AuthController {
                     loginDto.getUsernameOrEmail(), loginDto.getPassword()));
 
             SecurityContextHolder.getContext().setAuthentication(authentication);
-            return new ResponseEntity<Customer>(customerRetrievalImpl.findByUsernameOrCreate(loginDto.getUsernameOrEmail()), HttpStatus.OK);
+            return new ResponseEntity<Customer>(customerRetrievalImpl.findByUsername(loginDto.getUsernameOrEmail()), HttpStatus.OK);
         } catch (BadCredentialsException ex) {
             // Handle bad credentials here and return an error response
             return new ResponseEntity<String>("Invalid username or password", HttpStatus.UNAUTHORIZED);
