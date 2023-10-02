@@ -50,32 +50,25 @@ public class PetsServiceImpl implements PetService {
 
     @Override
     public Pets AdoptAPet(Long petId, Customer customer) {
-        Optional<Pets> petsOptional = petRepo.findById(petId);
+        //Find a pet which needs to be adopted
+        Pets pet = petRepo.findById(petId).orElseThrow(()->new RuntimeException("Pet not found"));
 
-        if (petsOptional.isPresent()) {
-            Pets pet = petsOptional.get();
 
-            Set<Application> applications = new HashSet<>();
-
-            // Create a new Application object and associate it with the customer
+//Create a new Application
             Application application = new Application();
-            application.setCustomer(customer);
 
-            // Add the new Application to the existing set of applications
-            applications.add(application);
+//Add that pet into the Application list
+            application.setPets(pet);
 
-            // Update the pet's applications
-            pet.setApplication(applications);
 
-            applicationRepo.saveAll(applications);
 
+//Save the application
+            applicationRepo.save(application);
             // Save the updated pet
             petRepo.save(pet);
 
             return pet;
-        } else {
-            throw new ResourceNotFoundException("Pet with id " + petId + " does not exist");
-        }
+
     }
 
 
