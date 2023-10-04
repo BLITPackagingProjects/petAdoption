@@ -1,6 +1,8 @@
 package com.blit.petAdoption.Service;
 
+import com.blit.petAdoption.Entity.Application;
 import com.blit.petAdoption.Entity.Customer;
+import com.blit.petAdoption.Entity.Employee;
 import com.blit.petAdoption.Entity.Pets;
 
 import java.util.List;
@@ -14,7 +16,7 @@ public interface PetService {
 
     Pets addPet(Pets pet);
 
-    Pets AdoptAPet(Long petId, Customer customer);
+    List<Application> AdoptAPet(Long petId, Customer customer, Employee employee);
 
     Pets updatePet(Long id, Pets pet);
 

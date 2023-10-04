@@ -1,7 +1,11 @@
 package com.blit.petAdoption.Controller;
 
+import com.blit.petAdoption.Entity.Application;
 import com.blit.petAdoption.Entity.Customer;
+import com.blit.petAdoption.Entity.Employee;
 import com.blit.petAdoption.Entity.Pets;
+import com.blit.petAdoption.Repository.CustomerRepo;
+import com.blit.petAdoption.Repository.EmployeeRepo;
 import com.blit.petAdoption.Service.PetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,6 +22,12 @@ public class PetController {
 
     @Autowired
     PetService petService;
+
+    @Autowired
+    CustomerRepo customerRepo;
+
+    @Autowired
+    EmployeeRepo employeeRepo;
 
     @GetMapping("/available")
     public ResponseEntity<List<Pets>> viewAvailPets(){
@@ -46,16 +56,35 @@ public class PetController {
         return new ResponseEntity<>(updatePet, HttpStatus.OK);
     }
 
-    @PostMapping("/{id}/adopt")
-    public ResponseEntity<Pets> adoptAPet(@PathVariable Long id) {
+    @PostMapping("/{id}/{customerid}/{employeeid}")
+    public ResponseEntity<List<Application>> adoptAPet(@PathVariable("id") Long id,
+                                          @PathVariable("customerid") Long id1,
+                                          @PathVariable("employeeid") Long id2) {
         // This is to test and make sure this method works
-        Customer currentCustomer = new Customer();
-        currentCustomer.setFirstName("John");
-        currentCustomer.setLastName("Doe");
-        currentCustomer.setUsername("johndoe");
+        //Customer currentCustomer = new Customer();
 
+//        currentCustomer.setFirstName("John");
+//        currentCustomer.setLastName("Doe");
+//        currentCustomer.setUsername("johndoe");
+//        currentCustomer.setEmail("john.doe@gmail.com");
+//        currentCustomer.setPassword("1234");
+//
+//        customerRepo.save(currentCustomer);
+        Employee em1 = new Employee();
+        em1.setEmployeeId(1L);
+        em1.setFirstName("James");
+        em1.setLastName("Connaway");
+        em1.setAddress("123 Hill Street");
+        em1.setPhone("213-212-2321");
+        em1.setUserName("JCon");
+        em1.setPassword("2134");
+
+        employeeRepo.save(em1);
+
+        Employee currentEmployee = employeeRepo.findById(id2).orElseThrow(() -> new RuntimeException("data not found"));
         // Call the service method to adopt the pet
-        Pets adoptedPet = petService.AdoptAPet(id, currentCustomer);
+        Customer currentCustomer = customerRepo.findById(id1).orElseThrow(() -> new RuntimeException("data not found"));
+        List<Application> adoptedPet = petService.AdoptAPet(id, currentCustomer, currentEmployee);
         return new ResponseEntity<>(adoptedPet, HttpStatus.OK);
     }
 

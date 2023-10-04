@@ -16,10 +16,10 @@ public class Application {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long applicationId;
 
-    @Column(nullable = false)
+    @Column
     private Date date;
 
-    @Column(nullable = false)
+    @Column
     private String status;
 
     @ManyToOne

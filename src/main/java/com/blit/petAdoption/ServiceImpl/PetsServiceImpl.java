@@ -2,8 +2,10 @@ package com.blit.petAdoption.ServiceImpl;
 
 import com.blit.petAdoption.Entity.Application;
 import com.blit.petAdoption.Entity.Customer;
+import com.blit.petAdoption.Entity.Employee;
 import com.blit.petAdoption.Entity.Pets;
 import com.blit.petAdoption.Repository.ApplicationRepo;
+import com.blit.petAdoption.Repository.CustomerRepo;
 import com.blit.petAdoption.Repository.PetRepo;
 import com.blit.petAdoption.Service.PetService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,7 @@ public class PetsServiceImpl implements PetService {
 
     @Autowired
     ApplicationRepo applicationRepo;
+
     @Override
     public List<Pets> viewAvailPets() {
         return  petRepo.displayActivePets();
@@ -49,7 +52,7 @@ public class PetsServiceImpl implements PetService {
     }
 
     @Override
-    public Pets AdoptAPet(Long petId, Customer customer) {
+    public List<Application> AdoptAPet(Long petId, Customer customer, Employee employee) {
         //Find a pet which needs to be adopted
         Pets pet = petRepo.findById(petId).orElseThrow(()->new RuntimeException("Pet not found"));
 
@@ -59,15 +62,16 @@ public class PetsServiceImpl implements PetService {
 
 //Add that pet into the Application list
             application.setPets(pet);
-
-
+            application.setCustomer(customer);
+            application.setEmployee(employee);
+            application.setStatus("filled");
 
 //Save the application
             applicationRepo.save(application);
             // Save the updated pet
             petRepo.save(pet);
 
-            return pet;
+            return applicationRepo.findAll();
 
     }
 
