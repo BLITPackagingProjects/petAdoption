@@ -60,40 +60,26 @@ public class PetController {
     public ResponseEntity<List<Application>> adoptAPet(@PathVariable("id") Long id,
                                           @PathVariable("customerid") Long id1,
                                           @PathVariable("employeeid") Long id2) {
-        // This is to test and make sure this method works
-        //Customer currentCustomer = new Customer();
 
-//        currentCustomer.setFirstName("John");
-//        currentCustomer.setLastName("Doe");
-//        currentCustomer.setUsername("johndoe");
-//        currentCustomer.setEmail("john.doe@gmail.com");
-//        currentCustomer.setPassword("1234");
-//
-//        customerRepo.save(currentCustomer);
-        Employee em1 = new Employee();
-        em1.setEmployeeId(1L);
-        em1.setFirstName("James");
-        em1.setLastName("Connaway");
-        em1.setAddress("123 Hill Street");
-        em1.setPhone("213-212-2321");
-        em1.setUserName("JCon");
-        em1.setPassword("2134");
-
-        employeeRepo.save(em1);
-
+        Customer currentCustomer = customerRepo.findById(id1).orElseThrow(() -> new RuntimeException("data not found"));
         Employee currentEmployee = employeeRepo.findById(id2).orElseThrow(() -> new RuntimeException("data not found"));
         // Call the service method to adopt the pet
-        Customer currentCustomer = customerRepo.findById(id1).orElseThrow(() -> new RuntimeException("data not found"));
         List<Application> adoptedPet = petService.AdoptAPet(id, currentCustomer, currentEmployee);
         return new ResponseEntity<>(adoptedPet, HttpStatus.OK);
     }
+
+    @GetMapping("/applications/{customerId}")
+    public ResponseEntity<List<Application>> seeApplicationStatus(@PathVariable Long customerId) {
+        // Call the service method to retrieve application status for the given customer
+        List<Application> applicationStatus = petService.SeeApplicationStatus(customerId);
+        return new ResponseEntity<>(applicationStatus, HttpStatus.OK);
+    }
+
 
     @DeleteMapping("/{id}")
     public ResponseEntity<HttpStatus> deletePet(@PathVariable Long id){
         petService.deletePet(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-
-
 
 }

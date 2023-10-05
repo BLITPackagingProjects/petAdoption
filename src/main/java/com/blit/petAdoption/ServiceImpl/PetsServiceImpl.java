@@ -12,16 +12,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class PetsServiceImpl implements PetService {
 
     @Autowired
     PetRepo petRepo;
+
+    @Autowired
+    CustomerRepo customerRepo;
 
     @Autowired
     ApplicationRepo applicationRepo;
@@ -56,7 +56,6 @@ public class PetsServiceImpl implements PetService {
         //Find a pet which needs to be adopted
         Pets pet = petRepo.findById(petId).orElseThrow(()->new RuntimeException("Pet not found"));
 
-
 //Create a new Application
             Application application = new Application();
 
@@ -64,7 +63,7 @@ public class PetsServiceImpl implements PetService {
             application.setPets(pet);
             application.setCustomer(customer);
             application.setEmployee(employee);
-            application.setStatus("filled");
+            application.setStatus("");
 
 //Save the application
             applicationRepo.save(application);
@@ -73,6 +72,19 @@ public class PetsServiceImpl implements PetService {
 
             return applicationRepo.findAll();
 
+    }
+
+    @Override
+    public List<Application> SeeApplicationStatus(Long customerId) {
+        Optional<Customer> customerOptional = customerRepo.findById(customerId);
+        List<Application> result = new ArrayList<>();
+
+        if (customerOptional.isPresent()) {
+            Customer customer = customerOptional.get();
+            result = applicationRepo.findByCustomer(customer);
+        }
+
+        return result;
     }
 
 

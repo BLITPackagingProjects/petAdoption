@@ -18,6 +18,8 @@ public interface PetService {
 
     List<Application> AdoptAPet(Long petId, Customer customer, Employee employee);
 
+    List<Application> SeeApplicationStatus(Long customerId);
+
     Pets updatePet(Long id, Pets pet);
 
     void deletePet(Long id);
