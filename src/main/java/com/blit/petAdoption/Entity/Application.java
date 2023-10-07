@@ -1,10 +1,13 @@
 package com.blit.petAdoption.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import lombok.Data;
 import org.antlr.v4.runtime.misc.NotNull;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Date;
 
 @Entity
@@ -16,8 +19,13 @@ public class Application {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long applicationId;
 
-    @Column(nullable = false)
+    @Column
+    @Temporal(TemporalType.DATE)
     private Date date;
+
+//    public LocalDate getDateAsLocalDate() {
+//        return date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+//    }
 
     @Column(nullable = false)
     private String status;

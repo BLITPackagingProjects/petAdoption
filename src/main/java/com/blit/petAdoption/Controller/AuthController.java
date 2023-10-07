@@ -1,6 +1,5 @@
 package com.blit.petAdoption.Controller;
 
-
 import com.blit.petAdoption.Entity.Customer;
 import com.blit.petAdoption.Entity.Role;
 import com.blit.petAdoption.LoginDto;
@@ -17,15 +16,13 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
 
 @RestController
 @RequestMapping("/auth")
+@CrossOrigin("*")
 public class AuthController {
 
     @Autowired
@@ -50,7 +47,8 @@ public class AuthController {
                     loginDto.getUsernameOrEmail(), loginDto.getPassword()));
 
             SecurityContextHolder.getContext().setAuthentication(authentication);
-            return new ResponseEntity<Customer>(customerRetrievalImpl.findByUsername(loginDto.getUsernameOrEmail()), HttpStatus.OK);
+            return new ResponseEntity<Customer>(customerRetrievalImpl.findByUsername(loginDto.getUsernameOrEmail()),
+                    HttpStatus.OK);
         } catch (BadCredentialsException ex) {
             // Handle bad credentials here and return an error response
             return new ResponseEntity<String>("Invalid username or password", HttpStatus.UNAUTHORIZED);
@@ -58,15 +56,15 @@ public class AuthController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<?> registerUser(@RequestBody SignUpDto signUpDto){
+    public ResponseEntity<?> registerUser(@RequestBody SignUpDto signUpDto) {
 
         // add check for username exists in a DB
-        if(customerRepo.existsByUsername(signUpDto.getUsername())){
+        if (customerRepo.existsByUsername(signUpDto.getUsername())) {
             return new ResponseEntity<>("Username is already taken!", HttpStatus.BAD_REQUEST);
         }
 
         // add check for email exists in DB
-        if(customerRepo.existsByEmail(signUpDto.getEmail())){
+        if (customerRepo.existsByEmail(signUpDto.getEmail())) {
             return new ResponseEntity<>("Email is already taken!", HttpStatus.BAD_REQUEST);
         }
 
@@ -77,14 +75,12 @@ public class AuthController {
         customer.setEmail(signUpDto.getEmail());
         customer.setPassword(passwordEncoder.encode(signUpDto.getPassword()));
 
-        Role roles =  roleRepo.findByName("ROLE_USER").get();
+        Role roles = roleRepo.findByName("ROLE_USER").get();
         customer.setRoles(Collections.singleton(roles));
 
         customerRepo.save(customer);
 
         return new ResponseEntity<>("Customer registered successfully", HttpStatus.OK);
 
-
-
-
-}}
+    }
+}

@@ -6,7 +6,7 @@ import lombok.Data;
 import java.util.Set;
 
 @Entity
-@Table(name="tbl_pets")
+@Table(name = "tbl_pets")
 @Data
 public class Pets {
 
@@ -36,9 +36,7 @@ public class Pets {
     @Column(nullable = false)
     private boolean active;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy="pets")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pets")
     private Set<Application> application;
 
 }
-
-
