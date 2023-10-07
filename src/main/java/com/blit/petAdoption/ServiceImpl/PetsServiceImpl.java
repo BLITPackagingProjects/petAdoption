@@ -1,19 +1,14 @@
 package com.blit.petAdoption.ServiceImpl;
 
-import com.blit.petAdoption.Entity.Application;
-import com.blit.petAdoption.Entity.Customer;
 import com.blit.petAdoption.Entity.Pets;
-import com.blit.petAdoption.Repository.ApplicationRepo;
 import com.blit.petAdoption.Repository.PetRepo;
 import com.blit.petAdoption.Service.PetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 @Service
 public class PetsServiceImpl implements PetService {
@@ -21,13 +16,12 @@ public class PetsServiceImpl implements PetService {
     @Autowired
     PetRepo petRepo;
 
-    @Autowired
-    ApplicationRepo applicationRepo;
     @Override
     public List<Pets> viewAvailPets() {
-        return  petRepo.displayActivePets();
+        return petRepo.displayActivePets();
     }
-   @Override
+
+    @Override
     public List<Pets> viewAllPets() {
         return (List<Pets>) petRepo.findAll();
     }
@@ -36,10 +30,10 @@ public class PetsServiceImpl implements PetService {
     public Pets retrievePetById(Long id) {
         Optional<Pets> petsOptional = petRepo.findById(id);
 
-        if(petsOptional.isPresent()) {
+        if (petsOptional.isPresent()) {
             return petsOptional.get();
-        }else{
-            throw new RuntimeException("Pet with "+ id +" not found");
+        } else {
+            throw new RuntimeException("Pet with " + id + " not found");
         }
     }
 
@@ -49,35 +43,11 @@ public class PetsServiceImpl implements PetService {
     }
 
     @Override
-    public Pets AdoptAPet(Long petId, Customer customer) {
-        //Find a pet which needs to be adopted
-        Pets pet = petRepo.findById(petId).orElseThrow(()->new RuntimeException("Pet not found"));
-
-
-//Create a new Application
-            Application application = new Application();
-
-//Add that pet into the Application list
-            application.setPets(pet);
-
-
-
-//Save the application
-            applicationRepo.save(application);
-            // Save the updated pet
-            petRepo.save(pet);
-
-            return pet;
-
-    }
-
-
-    @Override
     public Pets updatePet(Long id, Pets pet) {
 
         Optional<Pets> petsOptional = petRepo.findById(id);
 
-        if(petsOptional.isPresent()) {
+        if (petsOptional.isPresent()) {
             petsOptional.get().setAge(pet.getAge());
             petsOptional.get().setSex(pet.getSex());
             petsOptional.get().setName(pet.getName());
@@ -87,8 +57,8 @@ public class PetsServiceImpl implements PetService {
 
             petRepo.save(petsOptional.get());
             return petsOptional.get();
-        }else{
-            throw new ResourceNotFoundException("Pet with id "+id+ "does not exist");
+        } else {
+            throw new ResourceNotFoundException("Pet with id " + id + "does not exist");
         }
     }
 
@@ -96,10 +66,10 @@ public class PetsServiceImpl implements PetService {
     public void deletePet(Long id) {
 
         Optional<Pets> petsOptional = petRepo.findById(id);
-        if(petsOptional.isPresent()){
+        if (petsOptional.isPresent()) {
             petRepo.deleteById(id);
-        }else {
-            throw new ResourceNotFoundException("Pet with id "+id+ "does not exist");
+        } else {
+            throw new ResourceNotFoundException("Pet with id " + id + "does not exist");
         }
 
     }

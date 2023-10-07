@@ -10,14 +10,13 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-public class CustomerRetrievalImpl  {
+public class CustomerRetrievalImpl {
 
-   private CustomerRepo customerRepo;
+    private CustomerRepo customerRepo;
 
     public CustomerRetrievalImpl(CustomerRepo customerRepo) {
         this.customerRepo = customerRepo;
     }
-
 
     public Customer findByUsername(String username) throws UsernameNotFoundException {
         Optional<Customer> customerOptional = customerRepo.findByUsername(username);
