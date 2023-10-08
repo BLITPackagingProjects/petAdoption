@@ -9,4 +9,6 @@ import java.util.List;
 public interface ApplicationServices {
 
     List<Application> EmployeeCanSeeAllApplication();
+
+    Application createApplication(Application application, Long custId, Long petId);
 }
