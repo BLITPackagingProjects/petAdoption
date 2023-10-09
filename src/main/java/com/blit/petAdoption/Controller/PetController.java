@@ -1,5 +1,7 @@
 package com.blit.petAdoption.Controller;
 
+import com.blit.petAdoption.Entity.Application;
+import com.blit.petAdoption.Entity.ApplicationStatus;
 import com.blit.petAdoption.Entity.Pets;
 import com.blit.petAdoption.Service.PetService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,6 +51,12 @@ public class PetController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    @PutMapping("/applications/{applicationId}/status/{newStatus}")
+    public ResponseEntity<Application> updateApplicationStatus(
+            @PathVariable Long applicationId,
+            @PathVariable ApplicationStatus newStatus) {
 
-
+        Application updatedApplication = petService.updateApplicationStatus(applicationId, newStatus);
+        return new ResponseEntity<>(updatedApplication, HttpStatus.OK);
+    }
 }

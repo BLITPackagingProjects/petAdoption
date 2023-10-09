@@ -19,8 +19,8 @@ public class Application {
     @Column(nullable = false)
     private Date date;
 
-    @Column(nullable = false)
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private ApplicationStatus status;
 
     @ManyToOne
     @JoinColumn(name="employee_id", nullable = false)
@@ -33,10 +33,5 @@ public class Application {
     @ManyToOne
     @JoinColumn(name="customer_id", nullable = false)
     private Customer customer;
-
-
-
-
-
 
 }

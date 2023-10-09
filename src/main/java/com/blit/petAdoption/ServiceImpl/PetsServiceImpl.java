@@ -1,6 +1,9 @@
 package com.blit.petAdoption.ServiceImpl;
 
+import com.blit.petAdoption.Entity.Application;
+import com.blit.petAdoption.Entity.ApplicationStatus;
 import com.blit.petAdoption.Entity.Pets;
+import com.blit.petAdoption.Repository.ApplicationRepo;
 import com.blit.petAdoption.Repository.PetRepo;
 import com.blit.petAdoption.Service.PetService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +18,9 @@ public class PetsServiceImpl implements PetService {
 
     @Autowired
     PetRepo petRepo;
+
+    @Autowired
+    ApplicationRepo applicationRepo;
 
     @Override
     public List<Pets> viewAvailPets() {
@@ -70,6 +76,16 @@ public class PetsServiceImpl implements PetService {
         }else {
             throw new ResourceNotFoundException("Pet with id "+id+ "does not exist");
         }
-
     }
+
+    public Application updateApplicationStatus(Long applicationId, ApplicationStatus newStatus) {
+        Application application = applicationRepo.findById(applicationId)
+                .orElseThrow(() -> new RuntimeException("Application not found"));
+
+        application.setStatus(newStatus);
+        applicationRepo.save(application);
+
+        return application;
+    }
+
 }

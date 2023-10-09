@@ -1,5 +1,7 @@
 package com.blit.petAdoption.Service;
 
+import com.blit.petAdoption.Entity.Application;
+import com.blit.petAdoption.Entity.ApplicationStatus;
 import com.blit.petAdoption.Entity.Pets;
 
 import java.util.List;
@@ -16,5 +18,7 @@ public interface PetService {
     Pets updatePet(Long id, Pets pet);
 
     void deletePet(Long id);
+
+    Application updateApplicationStatus(Long applicationId, ApplicationStatus newStatus);
 
 }
